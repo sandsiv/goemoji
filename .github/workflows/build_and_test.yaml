@@ -24,6 +24,9 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
+      - name: LS
+        run: ls
+
       - name: Build and Check Race
         run: go build -v -race .
 
