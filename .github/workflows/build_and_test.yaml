@@ -15,7 +15,7 @@ jobs:
       - name: Cache checked out repo
         uses: actions/cache@v3
         with:
-          path: {{ runner.workspace }}/
+          path: {{ runner.workspace }}/j
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
           restore-keys: |
             ${{ runner.os }}-repo-
