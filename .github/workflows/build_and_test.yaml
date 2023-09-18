@@ -46,7 +46,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-${{ needs.prepare.get_commit_sha.outputs.lastCommitSha }}
+          key: ${{ runner.os }}-repo-${{ needs.prepare.get_commit_sha.outputs.last_commit_sha }}
 
       - name: Set-Up Go
         id: setup-go
