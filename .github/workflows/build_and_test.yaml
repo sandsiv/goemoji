@@ -24,10 +24,6 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
-      - name: Reuse checked out repo from previous job
-        run: |
-          cp -r ${{ github.workspace }}* .
-
       - name: Reuse Go setup from previous job
         run: echo "::add-path::${{ needs.prepare.outputs.go-path }}"
 
