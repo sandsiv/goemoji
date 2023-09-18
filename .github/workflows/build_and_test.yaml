@@ -18,7 +18,7 @@ jobs:
 
       - name: Get last commit SHA
         id: "get-commit-sha"
-        run: echo "LAST_COMMIT_SHA=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        run: echo "LAST_COMMIT_SHA=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Cache checked out repo
         uses: actions/cache@v3
