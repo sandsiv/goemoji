@@ -19,6 +19,7 @@ jobs:
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
           restore-keys: |
             ${{ runner.os }}-repo-
+          policy: push
 
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -42,11 +43,8 @@ jobs:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
 
-      - name: Set-Up Go
-        id: setup-go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.19
+      - name: Restore Go installation from previous job
+        run: echo "PATH=$PATH:${{ needs.prepare.outputs.go-path }}/bin" >> $GITHUB_ENV
 
       - name: Build and Check Race
         run: go build -v -race .
