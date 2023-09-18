@@ -32,8 +32,8 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
-      - name: Change current directory to custom workspace
-        run: cd ${{ runner.workspace }}/custom-workspace
+      - name: Reuse checked out repo from previous job
+        run: cp -r ${{ runner.workspace }}/custom-workspace/* .
 
       - name: Set-Up Go
         id: setup-go
