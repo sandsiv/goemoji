@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: LS
-        run: ls -la
+        run: cd ${{ github.workspace }} && ls -la
 
       - name: Build and Check Race
         run: go build -v -race .
