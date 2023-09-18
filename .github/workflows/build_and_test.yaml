@@ -1,33 +1,35 @@
 name: Build And Test
+
 on:
   pull_request:
     types:
       - opened
       - synchronize
       - reopened
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Get last commit SHA
+        id: "get-commit-sha"
+        run: echo "LAST_COMMIT_SHA=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Cache checked out repo
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-${{ git rev-parse HEAD }}
+          key: ${{ runner.os }}-repo-${{ steps.get-commit-sha.outputs.LAST_COMMIT_SHA}}
           restore-keys: ${{ runner.os }}-repo-
-
-      - name: Checkout Repo
-        uses: actions/checkout@v4
 
       - name: Set-Up Go
         id: setup-go
         uses: actions/setup-go@v4
         with:
           go-version: 1.19
-
-      - name: Get go version
-        run: go version
 
   build-and-test:
     needs: prepare
@@ -38,16 +40,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-${{ git rev-parse HEAD }}
+          key: ${{ runner.os }}-repo-${{ needs.prepare.steps.get-commit-sha.outputs.LAST_COMMIT_SHA }}
 
       - name: Set-Up Go
         id: setup-go
         uses: actions/setup-go@v4
         with:
           go-version: 1.19
-
-      - name: Get go ver
-        run: ${{ needs.prepare.outputs.go-path }}/bin/go version
 
       - name: Build and Check Race
         run: go build -v -race .
