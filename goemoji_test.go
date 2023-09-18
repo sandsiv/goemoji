@@ -8,6 +8,7 @@ import (
 	"testing"
 )
 
+// dfg
 func cleanUpAllTempDirs() {
 	_ = os.Remove("testdatatemp/codepoints.txt")
 	_ = os.Remove("testdatatemp")
