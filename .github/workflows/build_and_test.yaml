@@ -26,7 +26,7 @@ jobs:
     steps:
       - name: Reuse checked out repo from previous job
         run: |
-          mv ${{ needs.prepare.workspace }}/* .
+          cp -r ${{ needs.prepare.workspace }}/* $GITHUB_WORKSPACE/
 
       - name: Reuse Go setup from previous job
         run: echo "::add-path::${{ needs.prepare.outputs.go-path }}"
