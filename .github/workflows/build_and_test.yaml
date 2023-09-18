@@ -13,6 +13,14 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create custom workspace to persist repo
+        run: mkdir -p ${{ runner.workspace }}/custom-workspace
+
+      - name: Persist checked out repo
+        run: mv * ${{ runner.workspace }}/custom-workspace
 
       - name: Set-Up Go
         id: setup-go
@@ -24,10 +32,6 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-        with:
-          path: ./
 
       - name: Set-Up Go
         id: setup-go
