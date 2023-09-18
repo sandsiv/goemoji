@@ -23,7 +23,7 @@ jobs:
         with:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-repo-${{ steps.get-commit-sha.outputs.LAST_COMMIT_SHA}}
-          restore-keys: ${{ runner.os }}-repo-
+          restore-keys: ${{ runner.os }}-repo-${{ steps.get-commit-sha.outputs.LAST_COMMIT_SHA}}
 
       - name: Set-up Go
         id: setup-go
@@ -60,7 +60,7 @@ jobs:
             ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
           restore-keys: |
-            ${{ runner.os }}-go-      
+            ${{ runner.os }}-go-${{ hashFiles('go.mod') }}      
 
       - name: Unit Test
         run: go test -v ./...
