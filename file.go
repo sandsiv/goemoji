@@ -25,7 +25,7 @@ func (goe *GoEmoji) init() error {
 	goe.codepointsFullFilePath = filepath.Join(goe.dataPath, goe.codepointsFileName) + ".txt"
 
 	if !goe.downloadData && !goe.hasFile(goe.codepointsFullFilePath) {
-		return logging.Trace(fmt.Errorf("filee with emoji codepoints not found, please place it manually, or pass downloadData param as true"))
+		return logging.Trace(fmt.Errorf("file with emoji codepoints not found, please place it manually, or pass downloadData param as true"))
 	}
 	if goe.downloadData && !goe.hasFile(goe.codepointsFullFilePath) {
 		if _, err := os.Stat(goe.dataPath); os.IsNotExist(err) {
