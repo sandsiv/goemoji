@@ -39,7 +39,7 @@ jobs:
       - name: Restore checked out repo from previous job
         uses: actions/cache@v3
         with:
-          path: { { runner.workspace } }/
+          path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
 
       - name: Set-Up Go
