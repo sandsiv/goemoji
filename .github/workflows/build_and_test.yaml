@@ -8,8 +8,6 @@ on:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    outputs:
-      go-path: ${{ steps.setup-go.outputs.go-path }}
     steps:
 
       - name: Cache checked out repo
@@ -19,12 +17,19 @@ jobs:
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
           restore-keys: |
             ${{ runner.os }}-repo-
-          policy: push
 
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Cache Go installation
+        uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/go/1.19.13/x64/
+          key: ${{ runner.os }}-go-hash
+          restore-keys: |
+            ${{ runner.os }}-go-
 
       - name: Set-Up Go
         id: setup-go
@@ -46,8 +51,11 @@ jobs:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
 
-      - name: Restore Go from prepare
-        run: echo "PATH=$PATH:${{ needs.prepare.outputs.go-path }}/bin" >> $GITHUB_ENV
+      - name: Restore Go installation from previous job
+        uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/go/1.19.13/x64/
+          key: ${{ runner.os }}-go-hash
 
       - name: Get go ver
         run: ${{ needs.prepare.outputs.go-path }}/bin/go version
