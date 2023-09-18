@@ -50,7 +50,7 @@ jobs:
         run: echo "PATH=$PATH:${{ needs.prepare.outputs.go-path }}/bin" >> $GITHUB_ENV
 
       - name: Get go ver
-        run: go version
+        run: ${{ needs.prepare.outputs.go-path }}/bin/go version
 
       - name: Build and Check Race
         run: go build -v -race .
