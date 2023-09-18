@@ -14,6 +14,9 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - name: LS
+        uses: ls -la
+
       - name: Set-Up Go
         id: setup-go
         uses: actions/setup-go@v4
@@ -25,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: LS
-        run: ls -R
+        run: ls -la
 
       - name: Build and Check Race
         run: go build -v -race .
