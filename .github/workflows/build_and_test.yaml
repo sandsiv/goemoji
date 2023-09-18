@@ -1,0 +1,38 @@
+name: Build And Test
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      go-path: ${{ steps.setup-go.outputs.go-path }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set-Up Go
+        id: setup-go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.19
+
+  build-and-test:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reuse checked out repo from previous job
+        run: |
+          mv ${{ needs.prepare.workspace }}/* .
+
+      - name: Reuse Go setup from previous job
+        run: echo "::add-path::${{ needs.prepare.outputs.go-path }}"
+
+      - name: Build and Check Race
+        run: go build -v -race .
+
+      - name: Unit Test
+        run: go test -v ./...
