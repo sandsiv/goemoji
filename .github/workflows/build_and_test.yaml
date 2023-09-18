@@ -14,9 +14,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: LS
-        run: ls -la
-
       - name: Set-Up Go
         id: setup-go
         uses: actions/setup-go@v4
@@ -27,8 +24,16 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
-      - name: LS
-        run: cd ${{ github.workspace }} && ls -la
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          path: ./
+
+      - name: Set-Up Go
+        id: setup-go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.19
 
       - name: Build and Check Race
         run: go build -v -race .
