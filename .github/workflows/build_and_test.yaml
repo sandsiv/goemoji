@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Reuse Go setup from previous job
-        run: echo "::add-path::${{ needs.prepare.outputs.go-path }}"
+        run: echo "PATH=$PATH:${{ needs.prepare.outputs.go-path }}/bin" >> $GITHUB_ENV
 
       - name: Build and Check Race
         run: go build -v -race .
