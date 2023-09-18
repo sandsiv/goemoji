@@ -10,21 +10,23 @@ on:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    outputs:
+      commit-count: ${{ steps.get-commit-count.outputs.commit-count}}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Get last commit SHA
-        id: "get-commit-sha"
-        run: echo "LAST_COMMIT_SHA=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Get commit count
+        id: "get-commit-count"
+        run: echo "commit-count=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Cache checked out repo
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-54
+          key: ${{ runner.os }}-repo-${{ steps.get-commit-count.outputs.commit-count}}
 
       - name: Set-up Go
         id: setup-go
@@ -39,7 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-
       - name: X
         run: echo $GITHUB_OUTPUT
 
@@ -47,7 +48,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-54
+          key: ${{ runner.os }}-repo-${{ needs.prepare.outputs.commit-count }}
 
       - name: Set-Up Go
         id: setup-go
