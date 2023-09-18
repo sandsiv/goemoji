@@ -26,7 +26,7 @@ jobs:
         run: mv * ${{ runner.workspace }}/custom-workspace
 
       - name: LS after
-        run: ls -la
+        run: ls -la ${{ runner.workspace }}/custom-workspace
 
       - name: Set-Up Go
         id: setup-go
