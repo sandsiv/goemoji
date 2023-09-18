@@ -25,7 +25,6 @@ jobs:
         with:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-repo-${{ steps.get-commit-sha.outputs.LAST_COMMIT_SHA}}
-          restore-keys: ${{ runner.os }}-repo-${{ steps.get-commit-sha.outputs.LAST_COMMIT_SHA}}
 
       - name: Set-up Go
         id: setup-go
@@ -39,6 +38,10 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
+
+
+      - name: X
+        run: echo $GITHUB_OUTPUT
 
       - name: Restore checked out repo from previous job
         uses: actions/cache@v3
@@ -55,14 +58,14 @@ jobs:
       - name: Build and Check Race
         run: go build -v -race .
 
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ hashFiles('go.mod') }}      
+#      - uses: actions/cache@v3
+#        with:
+#          path: |
+#            ~/.cache/go-build
+#            ~/go/pkg/mod
+#          key: ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
+#          restore-keys: |
+#            ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
 
       - name: Unit Test
         run: go test -v ./...
