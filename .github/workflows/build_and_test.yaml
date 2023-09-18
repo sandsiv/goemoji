@@ -46,6 +46,9 @@ jobs:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
 
+      - name: Restore Go from prepare
+        run: echo "PATH=$PATH:${{ needs.prepare.outputs.go-path }}/bin" >> $GITHUB_ENV
+
       - name: Get go ver
         run: go version
 
