@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Reuse checked out repo from previous job
-        run: cp -r ${{ runner.workspace }}/custom-workspace/* .
+        run: cp -r ${{ runner.workspace }}/custom-workspace/ .
 
       - name: Set-Up Go
         id: setup-go
