@@ -56,9 +56,6 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Build and Check Race
-        run: go build -v -race .
-
       - uses: actions/cache@v3
         with:
           path: |
@@ -66,7 +63,10 @@ jobs:
             ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ hashFiles('go.mod') }}
+            ${{ runner.os }}-go-${{ hashFiles('go.mod') }}    
+
+      - name: Build and Check Race
+        run: go build -v -race .
 
       - name: Unit Test
         run: go test -v ./...
