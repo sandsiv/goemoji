@@ -16,11 +16,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: LS before
+        run: ls -la
+
       - name: Create custom workspace to persist repo
         run: mkdir -p ${{ runner.workspace }}/custom-workspace
 
       - name: Persist checked out repo
         run: mv * ${{ runner.workspace }}/custom-workspace
+
+      - name: LS after
+        run: ls -la
 
       - name: Set-Up Go
         id: setup-go
@@ -32,6 +38,9 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
+      - name: LS
+        run: ls -la ${{ runner.workspace }}/custom-workspace
+
       - name: Reuse checked out repo from previous job
         run: cp -r ${{ runner.workspace }}/custom-workspace/ .
 
