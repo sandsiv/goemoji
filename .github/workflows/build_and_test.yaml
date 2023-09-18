@@ -14,22 +14,11 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
-          restore-keys: |
-            ${{ runner.os }}-repo-
+          key: ${{ runner.os }}-repo-${{ git rev-parse HEAD }}
+          restore-keys: ${{ runner.os }}-repo-
 
       - name: Checkout Repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Cache Go installation
-        uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/go/1.19.13/x64/
-          key: ${{ runner.os }}-go-hash
-          restore-keys: |
-            ${{ runner.os }}-go-
 
       - name: Set-Up Go
         id: setup-go
@@ -49,13 +38,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
+          key: ${{ runner.os }}-repo-${{ git rev-parse HEAD }}
 
-      - name: Restore Go installation from previous job
-        uses: actions/cache@v3
+      - name: Set-Up Go
+        id: setup-go
+        uses: actions/setup-go@v4
         with:
-          path: /opt/hostedtoolcache/go/1.19.13/x64/
-          key: ${{ runner.os }}-go-hash
+          go-version: 1.19
 
       - name: Get go ver
         run: ${{ needs.prepare.outputs.go-path }}/bin/go version
