@@ -43,9 +43,6 @@ jobs:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-repo-${{ hashFiles('go.mod') }}
 
-      - name: Restore Go installation from previous job
-        run: echo "PATH=$PATH:${{ needs.prepare.outputs.go-path }}/bin" >> $GITHUB_ENV
-
       - name: Build and Check Race
         run: go build -v -race .
 
