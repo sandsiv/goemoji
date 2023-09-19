@@ -26,7 +26,7 @@ type emojiPadTestData struct {
 
 var emojiPadTestDataList = []emojiPadTestData{
 	{
-		raw:                   "hello😊World!😄🌎🏴󠁧󠁢󠁷󠁬󠁳󠁿🏳️‍🌈",
+		raw:                   "hello😊World!!😄🌎🏴󠁧󠁢󠁷󠁬󠁳󠁿🏳️‍🌈",
 		pad:                   "hello 😊 World! 😄 🌎 🏴󠁧󠁢󠁷󠁬󠁳󠁿 🏳️‍🌈 ",
 		separated:             "hello|😊|World!|😄|🌎|🏴󠁧󠁢󠁷󠁬󠁳󠁿|🏳️‍🌈|",
 		partsLen:              8,
