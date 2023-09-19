@@ -13,7 +13,7 @@ jobs:
     outputs:
       commit-sha: ${{ steps.get-commit-sha.outputs.commit-sha}}
     steps:
-      - name: Checkout repository for '${{ github.repository }}'
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -24,13 +24,13 @@ jobs:
         id: "get-commit-sha"
         run: echo "commit-sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Cache checked out repository for '${{ github.repository }}'
+      - name: Cache checked out repository
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-${{ github.repository }}-repo-${{ steps.get-commit-sha.outputs.commit-sha}}
 
-      - name: Restore/cache Go for '${{ github.repository }}'
+      - name: Restore/cache Go
         id: setup-go
         uses: actions/setup-go@v4
         with:
@@ -42,19 +42,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Restore checked out repository for '${{ github.repository }}'
+      - name: Restore checked out repository
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
           key: ${{ runner.os }}-${{ github.repository }}-repo-${{ needs.prepare.outputs.commit-sha }}
 
-      - name: Restore Go for '${{ github.repository }}'
+      - name: Restore Go
         id: setup-go
         uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
 
-      - name: Restore/cache build dependencies for '${{ github.repository }}'
+      - name: Restore/cache build dependencies
         uses: actions/cache@v3
         with:
           path: |
@@ -62,7 +62,7 @@ jobs:
             ~/go/pkg/mod
           key: ${{ runner.os }}-${{ github.repository }}-godeps-${{ hashFiles('go.mod') }}
 
-      - name: Run build, race detection, and unit tests for '${{ github.repository }}'
+      - name: Run build, race detection, and unit tests
         run: |
           go build -v -race .
           go test -v ./...
