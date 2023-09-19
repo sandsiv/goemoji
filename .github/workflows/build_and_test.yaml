@@ -18,15 +18,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get commit SHA
+      - name: Get latest commit SHA
         id: "get-commit-sha"
-        run: echo "commit-sha=$(git rev-list --count HEAD)" >> "$GITHUB_OUTPUT"
+        run: echo "commit-sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Cache checked out repo
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-${{ steps.get-commit-sha.outputs.commit-sha}}
+          key: ${{ runner.os }}-${{ github.repository }}-repo-${{ steps.get-commit-sha.outputs.commit-sha}}
 
       - name: Set-up Go
         id: setup-go
@@ -44,23 +44,24 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.workspace }}/
-          key: ${{ runner.os }}-repo-${{ needs.prepare.outputs.commit-sha }}
+          key: ${{ runner.os }}-${{ github.repository }}-repo-${{ needs.prepare.outputs.commit-sha }}
 
-      - name: Set-Up Go
+      - name: Restore Go set-up from previous job
         id: setup-go
         uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
 
-      - name: Build and Check Race
-        run: go build -v -race .
-
-      - uses: actions/cache@v3
+      - name: Cache/restore build dependencies
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-godeps-${{ hashFiles('go.mod') }}
+          key: ${{ runner.os }}-${{ github.repository }}-godeps-${{ hashFiles('go.mod') }}
+
+      - name: Build and Check Race
+        run: go build -v -race .
 
       - name: Unit Test
         run: go test -v ./...
