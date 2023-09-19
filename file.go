@@ -29,7 +29,7 @@ func (goe *GoEmoji) init() error {
 	}
 	if goe.downloadData && !goe.hasFile(goe.codepointsFullFilePath) {
 		if _, err := os.Stat(goe.dataPath); os.IsNotExist(err) {
-			if err = os.MkdirAll(goe.dataPath, 0750); err != nil {
+			if err := os.MkdirAll(goe.dataPath, 0750); err != nil {
 				return logging.Trace(err)
 			}
 		}
