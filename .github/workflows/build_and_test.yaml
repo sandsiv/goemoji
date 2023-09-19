@@ -41,7 +41,6 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
-
       - name: Restore checked out repository
         uses: actions/cache@v3
         with:
@@ -51,8 +50,6 @@ jobs:
       - name: Restore Go
         id: setup-go
         uses: actions/setup-go@v4
-        with:
-          go-version-file: 'go.mod'
 
       - name: Restore/cache build dependencies
         uses: actions/cache@v3
