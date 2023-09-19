@@ -13,10 +13,12 @@ jobs:
     outputs:
       commit-sha: ${{ steps.get-commit-sha.outputs.commit-sha}}
     steps:
-      - name: Checkout repo
+      - name: Checkout ${{ github.repository }} repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          fetch-tags: false
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Get latest commit SHA
         id: "get-commit-sha"
