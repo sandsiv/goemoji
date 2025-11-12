@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/Alliera/logging"
+	"github.com/sandsiv/logging"
 	"io"
 	"net/http"
 	"os"

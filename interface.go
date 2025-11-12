@@ -1,7 +1,7 @@
 package goemoji
 
 import (
-	"github.com/Alliera/logging"
+	"github.com/sandsiv/logging"
 	"regexp"
 	"strings"
 )

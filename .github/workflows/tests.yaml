@@ -1,0 +1,31 @@
+name: Run go tests
+
+on:
+  push:
+    tags:
+      - '*-test'
+
+  workflow_dispatch:
+    inputs:
+      custom_tag:
+        description: 'Custom tag (optional)'
+        required: false
+        type: string
+
+jobs:
+  test:
+    name: Run Go Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.custom_tag || github.ref }}
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Run tests
+        run: go test ./... -v

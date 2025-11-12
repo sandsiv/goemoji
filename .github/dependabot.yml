@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+
+  - package-ecosystem: "gomod"
+    directory: "/"
+    target-branch: "master"
+    open-pull-requests-limit: 5
+    schedule:
+      interval: "monthly"
+      day: "sunday"
+      time: "02:45"
+    assignees:
+      - "AmorBielyi"
+    allow:
+      - dependency-type: "all"
+    commit-message:
+      prefix: "Go Dependency"
+    rebase-strategy: "auto"
+
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
